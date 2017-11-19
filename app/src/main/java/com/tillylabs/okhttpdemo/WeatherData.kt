@@ -10,6 +10,7 @@ import java.util.*
 
 /**
  * Created by steven on 2017-10-13.
+ * This is the weather data model for the list items in ListActivity
  */
 
 @Entity

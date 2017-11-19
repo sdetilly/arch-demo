@@ -12,6 +12,7 @@ import retrofit2.http.Query
 
 /**
  * Created by steven on 2017-10-13.
+ * This class is used to get info from the OpenWeather API
  */
 
 class NetworkCaller {
@@ -23,8 +24,9 @@ class NetworkCaller {
     interface WebService{
         /**
          * @GET declares an HTTP GET request
-         * @Path("user") annotation on the userId parameter marks it as a
-         * replacement for the {user} placeholder in the @GET path
+         * @Query("q") used to add a cityname to the GET url annotation.
+         * @Query("APPID") is the id used to make calls to the OpenWeather API
+         * @Query("units") to receive metric units
          */
         @GET("/data/2.5/weather")
         fun getWeatherData(@Query("q") city: String,
@@ -53,12 +55,6 @@ class NetworkCaller {
 
     @Throws(Exception::class)
     fun run(url: String): JsonElement? {
-        //val request = Request.Builder()
-          //      .url("http://api.openweathermap.org/data/2.5/weather?q=Montreal&APPID=c7ad5378667fcc9a675de8d4625ae369&units=metric")
-          //      .get()
-          //      .build()
-
-        //val response = client.newCall(request).execute()
         return service.getWeatherData(url, APPID, UNIT).execute().body()
     }
 

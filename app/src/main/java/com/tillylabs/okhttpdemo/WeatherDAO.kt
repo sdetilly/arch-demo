@@ -13,8 +13,8 @@ import android.arch.persistence.room.Query
  */
 @Dao
 interface WeatherDao {
-    @get:Query("SELECT * FROM weatherData")
-    val all: LiveData<List<WeatherData>>
+    @Query("SELECT * FROM weatherData")
+    fun loadAll(): LiveData<List<WeatherData>>
 
     /*@Query("SELECT * FROM weatherData WHERE cityName IN :cityName")
     fun loadAllByName(cityNames: List<String>): List<WeatherData>*/

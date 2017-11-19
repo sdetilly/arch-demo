@@ -5,7 +5,6 @@ import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.ComponentName
 import android.content.Context
@@ -23,6 +22,12 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_list.*
 
 
+/**
+ * Created by steven on 2017-10-13.
+ * The "main" activity. This activity listens to the viewmodels data
+ * and displays it. Since the data is LiveData, the UI will update the data automatically
+ *
+ */
 
 class ListActivity : AppCompatActivity() {
 
@@ -35,8 +40,7 @@ class ListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
         rv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        db = Room.databaseBuilder(applicationContext,
-                WeatherDatabase::class.java, "weather").fallbackToDestructiveMigration().build()
+        db = WeatherDatabase.getInstance(this)
         mJobScheduler = getSystemService( Context.JOB_SCHEDULER_SERVICE ) as JobScheduler
         setupJobScheduler()
         weatherVM = ViewModelProviders.of(this).get(WeatherVM::class.java)
@@ -57,7 +61,7 @@ class ListActivity : AppCompatActivity() {
         val builder = JobInfo.Builder(1,
                 ComponentName(this, MyJobScheduler::class.java))
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                .setPeriodic(1000L * 60L * 15L)
+                .setPeriodic(1000L * 60L * 30L)
 
         if( mJobScheduler.schedule( builder.build() ) == JobScheduler.RESULT_FAILURE ) {
             Log.d("JOB", "Bruh... didn't work")
